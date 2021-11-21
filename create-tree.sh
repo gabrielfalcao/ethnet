@@ -1,54 +1,15 @@
 #!/usr/bin/env bash
 
-path=$1
-now=$(date +"%s")
-
-stderr=${0}.${now}.stderr.log
-stdout=${0}.${now}.stdout.log
+SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+source ${SCRIPT_DIR}/base.sh
 
 
 usage(){
-    echo "Usage: $0 <target-path> [node-count]"
+    echo "Usage: $0 [node-count]"
     echo -e "\nExample:"
     echo -e "\t$0 /srv/ethereum 10"
     echo -e "\t# creates 10 node configs"
 }
-
-log() {
-    echo "$@" >> ${stdout}
-}
-
-info() {
-    log "# ${@}"
-    echo -e "\033[1;34m${@}\033[0m"
-}
-success() {
-    log "# ${@}"
-    echo -e "\033[1;32m${@}\033[0m"
-}
-warning() {
-    log "# WARNING: ${@}"
-    echo -e "\033[0;33mWarning: \033[1;33m${@}\033[0m"
-}
-error() {
-    log "# ERROR: ${@}"
-    echo -e "\033[0;31mError: \033[1;31m${@}\033[0m"
-}
-
-run_command() {
-    log "${@}"
-    2>>${stderr} $@
-}
-if [ "$path" == "help" ]; then
-    usage
-    exit 0
-fi
-if [ -z "$path" ]; then
-    error "required argument: path to the ethereum net tree"
-    usage
-    exit 1
-fi
-shift
 
 node_count=${1}
 
@@ -57,30 +18,41 @@ if [ -z "$node_count" ]; then
 fi
 
 if [ "$node_count" -lt 3 ]; then
-    error "required argument: path to the ethereum net tree"
-    usage
+    node_count=1
 fi
 set -e
 secret_path="${path}/secret"
-log_path="${path}/log"
 data_path="${path}/data"
+address_path="${path}/addrs"
 
 if [ -e "${path}" ]; then
     warning "${path} already exists"
+    rm -rf $path
 fi
 info "creating basic tree structure for ${node_count} nodes"
-run_command mkdir -p ${path}/{log,data,secret}
+run_command mkdir -p ${path}/{log,data,secret,addrs}
 
-for index in $(seq 1 "${node_count}"); do
-    node_path="${data_path}/node${index}"
-    password_file="${secret_path}/node${index}.password"
-    pub_file="${secret_path}/node${index}.pub"
-    keystore_path="${secret_path}/node${index}.${now}.keystore"
-    info "generating password for node${index}"
+setup_node() {
+    name=$1
+    shift
+    node_path="${data_path}/${name}"
+    password_file="${secret_path}/${name}.password"
+    pub_file="${secret_path}/${name}.pub"
+    keystore_path="${secret_path}/${name}.keystore"
+    address_file="${address_path}/${name}.hex"
+    info "\nSetting up node ${name}"
+    info "\tgenerating password for ${name}"
     run_command openssl rand -base64 12 > "${password_file}"
-    info "creating tree for node${index}"
+    info "\tcreating tree for node ${name}"
     run_command mkdir -p "${node_path}"
-    info "creating account for node${index}"
+    info "\tcreating account for ${name}"
     run_command geth --datadir "${node_path}" account new --keystore="${keystore_path}" --password="${password_file}" > "${pub_file}"
-    success "public key info stored in ${pub_file}\n"
+    success "\tpublic key info stored in ${pub_file}"
+    address=$(find "${keystore_path}" -type f | sed 's/.*-//')
+    success "\tstoring address of ${name} in ${address_file}: \033[1;37m${address}\n"
+    echo -n "${address}" > "${address_file}"
+}
+for index in $(seq 1 "${node_count}"); do
+    setup_node "rpc${index}"
+    setup_node "miner${index}"
 done
