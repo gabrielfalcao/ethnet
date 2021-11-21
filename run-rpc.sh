@@ -32,6 +32,7 @@ set -ex
 geth --datadir "${node_path}" \
 	--syncmode 'full' \
 	--verbosity 6 \
+        --nodiscover \
 	--keystore "${keystore_path}" \
 	--port ${port} \
         --http --http.addr 0.0.0.0 --http.port ${http_port} \

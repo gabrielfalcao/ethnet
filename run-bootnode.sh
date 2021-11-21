@@ -7,5 +7,5 @@ if [ ! -e "${boot_key_path}" ]; then
     bootnode -genkey ${boot_key_path}
 fi
 
-echo "Running bootnode. Logs available in: ${boot_log_path}"
-geth --datadir ${data_path} --networkid "${network_id}" --nat "extip:${external_ip}"
+set -e
+run_command geth --datadir ${data_path} --networkid "${network_id}" --nat "extip:${external_ip}"

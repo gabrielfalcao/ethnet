@@ -20,7 +20,7 @@ SSH into your server and run
 ```bash
 add-apt-repository --yes --update --enable-source ppa:ethereum/ethereum
 apt update
-apt install -y bash python3-dev openssl-dev ca-certificates curl wget sed nodejs git jq
+apt install -y bash python3-dev openssl-dev ca-certificates curl wget sed nodejs git jq ack-grep
 apt install -y ethereum puppeth
 ```
 

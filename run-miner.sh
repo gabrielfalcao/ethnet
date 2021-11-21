@@ -27,6 +27,7 @@ set -ex
 geth --datadir "${node_path}" \
 	--syncmode 'full' \
 	--verbosity 6 \
+        --nodiscover \
 	--keystore "${keystore_path}" \
 	--port ${port} \
 	--bootnodes "${node_url}" \

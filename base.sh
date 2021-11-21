@@ -8,10 +8,10 @@ log_path="${path}/log"
 data_path="${path}/data"
 address_path="${path}/addrs"
 boot_key_path="${path}/boot.key"
-boot_log_path="${log_path}/boot.log"
+boot_log_path="/tmp/run-bootnode.sh.err.log"
 stderr="/tmp/${script_name}.err.log"
 stdout="/tmp/${script_name}.out.log"
-network_id=4444
+network_id=9876
 mkdir -p "${log_path}"
 log() {
     echo "$@" >> ${stdout}
@@ -51,7 +51,13 @@ else
 fi
 
 if [ -z "${NODE_URL}" ]; then
-    node_url="enode://db1175edd511f6c2631f7b0f8c8af9a677483951c1b20bebc869a0b2ac38b0b7cdcf9e3a99a7a2cfa527325bdc9c430e80caa0a7f69ce22c5da02dc50c0aef94@159.203.124.106:30303"
+    node_url=$(grep enode "${boot_log_path}" | awk '{ print $NF }' | sed 's/self=//')
+    warning "The environment variable NODE_URL was not provided"
+    if [ -z "${node_url}" ]; then
+        error "Could not find enode url in ${boot_log_path}"
+        exit 1
+    fi
+    warning "Using grep to find node_url in the bootnode server logs: ${node_url}"
 else
    node_url=${NODE_URL}
 fi
