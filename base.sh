@@ -11,7 +11,7 @@ boot_key_path="${path}/boot.key"
 boot_log_path="${log_path}/boot.log"
 stderr="/tmp/${script_name}.err.log"
 stdout="/tmp/${script_name}.out.log"
-
+network_id=4444
 mkdir -p "${log_path}"
 log() {
     echo "$@" >> ${stdout}
@@ -51,7 +51,7 @@ else
 fi
 
 if [ -z "${NODE_URL}" ]; then
-   node_url="enode://2aeb8c5b679fa85e7b27e34ad3f8e1f2d163539cd3f0d1e1e772be562f97f18f9fe9df1a02c7e29409c02d37122074c2dc1326fdf6965b1f8b989777a04665ee@159.203.124.106:30303";
+    node_url="enode://db1175edd511f6c2631f7b0f8c8af9a677483951c1b20bebc869a0b2ac38b0b7cdcf9e3a99a7a2cfa527325bdc9c430e80caa0a7f69ce22c5da02dc50c0aef94@159.203.124.106:30303"
 else
    node_url=${NODE_URL}
 fi

@@ -30,7 +30,7 @@ geth --datadir "${node_path}" \
 	--keystore "${keystore_path}" \
 	--port ${port} \
 	--bootnodes "${node_url}" \
-	--networkid 331713 \
+	--networkid "${network_id}" \
 	--miner.gasprice '1' \
 	--unlock "${unlock_address}" \
 	--password "${password_file}" \

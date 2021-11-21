@@ -5,8 +5,8 @@ from pathlib import Path
 
 here = Path(__file__).parent.absolute()
 
-BASE_PORT = 30400
-BASE_RPC_PORT = 8110
+BASE_PORT = 30301
+BASE_RPC_PORT = 8101
 ethereum_path = Path('/srv/ethereum')
 
 def load_addresses():
@@ -19,7 +19,7 @@ def load_addresses():
 
 def iter_names(matches=None):
     addrs = load_addresses()
-    for index, key in enumerate(sorted(addrs.keys(), reverse=False)):
+    for index, key in enumerate(sorted(addrs.keys(), reverse=True)):
         value = addrs[key]
         rpc_port = BASE_RPC_PORT + index
         port = BASE_PORT + index
@@ -38,19 +38,15 @@ def main():
     nodes = list(iter_names())
     print(json.dumps(nodes, indent=2))
 
-    print(f'{tool("run-bootnode.sh")}')
-
     for info in nodes:
         name = info['name']
         port = info['port']
         rpc_port = info['rpc_port']
-        run_path = Path(f'/srv/run/{name}')
-        run_path.mkdir(parents=True, exist_ok=True)
+
         if info['name'].startswith('rpc'):
             print(f'{tool("run-rpc.sh")} {name} {port} {rpc_port}')
         elif info['name'].startswith('miner'):
             print(f'{tool("run-miner.sh")} {name} {port}')
-
 
 
 if __name__ == '__main__':

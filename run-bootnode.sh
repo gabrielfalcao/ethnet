@@ -6,4 +6,6 @@ source ${SCRIPT_DIR}/base.sh
 if [ ! -e "${boot_key_path}" ]; then
     bootnode -genkey ${boot_key_path}
 fi
-geth --datadir /srv/ethereum/data/ --networkid 331713 --nat extip:${external_ip} > "${boot_log_path}"
+
+echo "Running bootnode. Logs available in: ${boot_log_path}"
+2>&1 geth --datadir ${data_path} --networkid "${network_id}" --nat "extip:${external_ip}" > "${boot_log_path}"

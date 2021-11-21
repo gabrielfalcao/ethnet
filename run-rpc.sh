@@ -37,5 +37,5 @@ geth --datadir "${node_path}" \
         --http --http.addr 0.0.0.0 --http.port ${http_port} \
         --http.api admin,debug,eth,miner,net,personal,shh,txpool,web3 \
 	--bootnodes "${node_url}" \
-	--networkid 331713 \
+	--networkid "${network_id}" \
         --nat extip:159.203.124.106
