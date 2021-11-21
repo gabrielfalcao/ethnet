@@ -157,6 +157,6 @@ Edit the file `/srv/tools/base.sh` and change the variable assignment
 ## Final Step: Connect your metamask
 
 
-Open your [MetaMask][https://metamask.io/] extension and add a new network
+Open your [MetaMask](https://metamask.io/) extension and add a new network
 
 Use the port of your RPC, following the example from step 8 would be `8113` but make sure to use the port passed as last argument of the `run-rpc.sh` command generated in step 6.
