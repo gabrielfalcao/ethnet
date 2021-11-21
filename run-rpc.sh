@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-source ${SCRIPT_DIR}/base.sh
+source ${SCRIPT_DIR}/nodeurl.sh
 
 
 name=$1
@@ -30,12 +30,13 @@ unlock_address="0x$(cat ${address_file})"
 
 set -ex
 geth --datadir "${node_path}" \
-	--syncmode 'full' \
+        --syncmode 'snap' \
+        --ipcdisable \
 	--verbosity 6 \
-        --nodiscover \
 	--keystore "${keystore_path}" \
 	--port ${port} \
         --http --http.addr 0.0.0.0 --http.port ${http_port} \
+        --http.corsdomain "*" \
         --http.api admin,debug,eth,miner,net,personal,shh,txpool,web3 \
 	--bootnodes "${node_url}" \
 	--networkid "${network_id}" \

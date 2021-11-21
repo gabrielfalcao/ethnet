@@ -36,6 +36,7 @@ error() {
 
 run_command() {
     log "${@}"
+    info "Running command: \033[1;37m${@}"
     2>>${stderr} $@
 }
 
@@ -44,20 +45,8 @@ get_node_url(){
 }
 if [ -z "${EXTERNAL_IP}" ]; then
     external_ip=$(ifconfig eth0 | grep 'inet\s' | awk '{ print $2}')
-    warning "The environment variable EXTERNAL_IP was not provided"
-    warning "Using ifconfig to get ip: ${external_ip}"
+    # warning "The environment variable EXTERNAL_IP was not provided"
+    info "Using ifconfig to get ip: ${external_ip}"
 else
     external_ip="${EXTERNAL_IP}";
-fi
-
-if [ -z "${NODE_URL}" ]; then
-    node_url=$(grep enode "${boot_log_path}" | awk '{ print $NF }' | sed 's/self=//')
-    warning "The environment variable NODE_URL was not provided"
-    if [ -z "${node_url}" ]; then
-        error "Could not find enode url in ${boot_log_path}"
-        exit 1
-    fi
-    warning "Using grep to find node_url in the bootnode server logs: ${node_url}"
-else
-   node_url=${NODE_URL}
 fi

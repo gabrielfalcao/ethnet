@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-source ${SCRIPT_DIR}/base.sh
+source ${SCRIPT_DIR}/nodeurl.sh
 
 
 name=$1
@@ -25,9 +25,9 @@ unlock_address="0x$(cat ${address_file})"
 
 set -ex
 geth --datadir "${node_path}" \
-	--syncmode 'full' \
+	--syncmode 'snap' \
 	--verbosity 6 \
-        --nodiscover \
+        --ipcdisable \
 	--keystore "${keystore_path}" \
 	--port ${port} \
 	--bootnodes "${node_url}" \

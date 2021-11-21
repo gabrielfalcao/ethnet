@@ -1,5 +1,7 @@
 # Setup your own ethereum network
 
+> NOTE: I have not yet managed to connect to metamask, it seems that it takes time for the node to sync
+
 This repo has scripts to semi-automate the steps from [this blog post](https://medium.com/@pradeep_thomas/how-to-setup-your-own-private-ethereum-network-f80bc6aea088)
 
 

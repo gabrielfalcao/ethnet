@@ -8,4 +8,6 @@ if [ ! -e "${boot_key_path}" ]; then
 fi
 
 set -e
-run_command geth --datadir ${data_path} --networkid "${network_id}" --nat "extip:${external_ip}"
+rm -f ${stdout}
+rm -f ${stderr}
+run_command bootnode -nodekey ${boot_key_path} -verbosity 9 -addr :30303
