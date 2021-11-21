@@ -8,4 +8,4 @@ if [ ! -e "${boot_key_path}" ]; then
 fi
 
 echo "Running bootnode. Logs available in: ${boot_log_path}"
-2>&1 geth --datadir ${data_path} --networkid "${network_id}" --nat "extip:${external_ip}" > "${boot_log_path}"
+geth --datadir ${data_path} --networkid "${network_id}" --nat "extip:${external_ip}"

@@ -127,7 +127,17 @@ will output something like:
 /srv/tools/run-bootnode.sh
 ```
 
-## Step 7: Run the first miner
+## Step 8: Edit `base.sh` again
+
+Edit the file `/srv/tools/base.sh` and change the variable assignment
+`node_url` to the `enode://` url printed in the output of the bootnode (i.e.: from step 7)
+
+```diff
+-node_url="enode://db1175edd511f6c2631f7b0f8c8af9a677483951c1b20bebc869a0b2ac38b0b7cdcf9e3a99a7a2cfa527325bdc9c430e80caa0a7f69ce22c5da02dc50c0aef94@159.203.124.106:30303"
++node_url="enode://YOUR-NODE-URL"
+```
+
+## Step 9: Run the first miner
 
 ```bash
 /srv/tools/run-miner.sh miner1 30400
@@ -135,7 +145,7 @@ will output something like:
 
 > NOTE: make sure to use the command generated in step 6, the example above is a mere illustration.
 
-## Step 8: Run the first rpc
+## Step 10: Run the first rpc
 
 ```bash
 /srv/tools/run-rpc.sh rpc1 30403 8113
